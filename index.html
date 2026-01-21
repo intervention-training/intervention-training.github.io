@@ -239,7 +239,7 @@
         </div>
       </div>
     </section>
-    <section class="section">
+    <section class="section" style="margin-top: -50px;">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column is-full-width">
@@ -248,24 +248,54 @@
             <h2 class="title is-3" id="setup"><span style="font-family: monospace;">InT</span>: Self-Proposed Interventions</h2>
               <!-- <h3 class="title is-4">Experiment Setup</h3> -->
               <div class="content has-text-justified">
+                <!-- <div style="display: flex; justify-content: center;">
+                  <img src="static/images/fig1.png" alt="" style="width: 80%;" />
+                </div> -->
                 <p>In our method, we correct an incorrect rollout by intervening at the exact point of error. We do the following:</p>
                 <ol>
                   <li><b>Self-verify:</b> Given the incorrect rollout and a reference solution, the base model verifies each step in the incorrect rollout.</li>
-                  <li><b>Propose intervention:</b> After locating the first mistake, the base model proposes an <i>intervention</i> in replacement of the erroneous step to steer the remainder of the trajectory toward the correct answer.</li>
+                  <li><b>Propose intervention:</b> After locating the first mistake <span style="font-family: 'Courier New', monospace; font-style: italic;">y<sub>t*</sub></span> at step <span style="font-family: 'Courier New', monospace; font-style: italic;">t*</span>, the base model proposes an <i>intervention</i> <span style="font-family: 'Courier New', monospace; font-style: italic;">ỹ<sub>t*</sub></span> in replacement of the erroneous step to steer the remainder of the trajectory toward the correct answer.</li>
                 </ol>
-                <p>
-                  After generating the interventions, we perform SFT on them and then downstream RL.
-                </p>
                 <div style="display: flex; justify-content: center;">
-                  <img src="static/images/fig1.png" alt="" style="width: 80%;" />
+                  <table style="width: 60%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                      <tr>
+                        <th style="padding: 15px; text-align: left; font-weight: 600; border-top: 2px solid #34495e; border-bottom: 2px solid #34495e; white-space: nowrap;">Rollouts Are Conditioned On</th>
+                        <th style="padding: 15px; text-align: center; font-weight: 600; border-top: 2px solid #34495e; border-bottom: 2px solid #34495e;">Coverage</th>
+                        <th style="padding: 15px; text-align: center; font-weight: 600; border-top: 2px solid #34495e; border-bottom: 2px solid #34495e;">Accuracy</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; white-space: nowrap;">problem <span style="font-family: 'Courier New', monospace; font-style: italic;">x</span> + correct prefix <span style="font-family: 'Courier New', monospace; font-style: italic;">y<sub>&lt;t*</sub></span> + original step <span style="font-family: 'Courier New', monospace; font-style: italic;">y<sub>t*</sub></span></td>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; text-align: center;">29 / 334</td>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; text-align: center;">0.0713%</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; white-space: nowrap;">problem <span style="font-family: 'Courier New', monospace; font-style: italic;">x</span> + correct prefix <span style="font-family: 'Courier New', monospace; font-style: italic;">y<sub>&lt;t*</sub></span> + intervention <span style="font-family: 'Courier New', monospace; font-style: italic;">ỹ<sub>t*</sub></span></td>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; text-align: center;">80 / 334</td>
+                        <td style="padding: 12px 15px; border-bottom: 1px solid #ecf0f1; text-align: center;">1.56%</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
+                <p style="margin-top: 20px; margin-bottom: 30px;">
+                  As shown above, continuing from the interventions rather from the original erroneous step leads to much better accuracy and coverage, measured as pass@32. We also provide two examples of interventions here:
+                </p>
+                <div class="text-center">
+                  <img src="static/images/example.png" alt="" class="mx-auto"/>
+                </div>
+                <div style="margin-top: 2rem;"></div>
+                <p>
+                  After obtaining the interventions, we perform SFT on them and then apply downstream RL.
+                </p>
               </div>
-          <!-- </details> -->
+              <!-- </details> -->
           </div>
         </div>
       </div>
     </section>
-    <section class="section">
+    <section class="section" style="margin-top: -50px;">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column is-full-width">
@@ -280,12 +310,12 @@
                   <li><b>R1 Think, R1 Summary:</b> DeepSeek-R1 generated content inside and after the <span style="font-family: monospace;">&lt;think&gt;</span> tags, respectively.</li>
                   <li><b>Self-reflection:</b> created by prompting the base model to rewrite incorrect rollouts <i>entirely</i> given a reference solution.</li>
                 </ol>
-                <div style="display: flex; gap: 10px; text-align: center; margin-top: 10px; justify-content: center;">
+                <div style="display: flex; gap: 10px; text-align: center; margin-top: 40px; margin-bottom: 10px; justify-content: center;">
                   <div><img src="static/images/nll.png"></div>
                   <div><img src="static/images/off_policy_train_pass_at_k.png"></div>
                   <div><img src="static/images/off_policy_test_pass_at_k.png"></div>
                 </div>
-                <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4">
+                <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4" style="margin-bottom: 20px;">
                   <b>(left)</b> Average negative log-likelihood (NLL) computed over 64 sampled traces.  <b>(middle)</b> Train pass@k on 64 sampled training problems. InT achieves the highest pass@k. <b>(right)</b> Test pass@𝑘 on IMO-Bench, AMO-Bench, and Apex Shortlist. InT again attains the best pass@k.
                 </p>
                 <p>
@@ -297,7 +327,7 @@
         </div>
       </div>
     </section>
-    <section class="section">
+    <section class="section" style="margin-top: -50px;">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column is-full-width">
@@ -306,21 +336,27 @@
             <h2 class="title is-3" id="setup">Final RL Results</h2>
             <div class="content has-text-justified">
               <p>
-                So <span style="font-family: monospace;">InT</span> leads to the highest post-SFT pass@k, and therefore provides a good initialization for online RL to reinforce the learned interventions. In the table below, we report the downstream RL performance on several benchmarks, evaluated at 16K tokens.
+                So <span style="font-family: monospace;">InT</span> leads to the highest post-SFT pass@k, and therefore provides a good initialization for online RL to reinforce the learned interventions. We find that RL on the <span style="font-family: monospace;">InT</span> checkpoint yields higher reward and lower zero advantage ratio (defined as the fraction of problems for which the model never produces a correct rollout) when compared to the other baselines.
               </p>
+              <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+                <div style="display: flex; gap: 10px; text-align: center; width: 60%;">
+                  <div><img src="static/images/reward.png"></div>
+                  <div><img src="static/images/zero_advantage.png"></div>
+                </div>
+              </div>
               <p>
-                Notably, initializing RL with <span style="font-family: monospace;">InT</span> leads to a near 14% improvement on IMO-Answerbench, beating larger models such as <span style="font-family: monospace;">DeepSeek-R1-0528-Qwen3-8B</span> (18.44%) and <span style="font-family: monospace;">gpt-oss-20b</span> (23.36%) evaluated at a larger budget of 32K.
+                In the table below, we report the downstream RL performance on several benchmarks, evaluated at 16K tokens. Notably, initializing RL with <span style="font-family: monospace;">InT</span> leads to a near 14% improvement on IMO-Answerbench, beating larger models such as <span style="font-family: monospace;">DeepSeek-R1-0528-Qwen3-8B</span> (18.44%) and <span style="font-family: monospace;">gpt-oss-20b</span> (23.36%) evaluated at a larger budget of 32K.
               </p>
-              <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+              <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 30px;">
                 <thead>
                     <tr>
-                        <th style="text-align: left; border-bottom: 2px solid #333;">Model</th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">IMO-AnswerBench</th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">HMMT 2025 Nov</th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">AMO-Bench pass@8</th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">Apex Shortlist pass@8</th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">D<sub>train</sub></th>
-                        <th style="text-align: center; border-bottom: 2px solid #333;">Average</th>
+                        <th style="text-align: left; border-bottom: 2px solid #333; border-top: 2px solid #333">Model</th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">IMO-AnswerBench</th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">HMMT 2025 Nov</th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">AMO-Bench pass@8</th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">Apex Shortlist pass@8</th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">D<sub>train</sub></th>
+                        <th style="text-align: center; border-bottom: 2px solid #333; border-top: 2px solid #333">Average</th>
                     </tr>
                 </thead>
                 <tbody>
